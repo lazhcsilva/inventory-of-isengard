@@ -14,7 +14,7 @@ public class Product {
     private int quantity;
 
     @ManyToOne
-    private ProductCategory categories;
+    private ProductCategory category;
 
     public Long getId() {
         return id;
@@ -33,6 +33,6 @@ public class Product {
     }
 
     public ProductCategory getCategories() {
-        return categories;
+        return category;
     }
 }

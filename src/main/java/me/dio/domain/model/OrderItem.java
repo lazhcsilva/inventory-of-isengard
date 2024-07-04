@@ -6,13 +6,13 @@ import java.util.List;
 
 @Entity
 @Table(name = "tb_order")
-public class Order {
+public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToMany
-    private List<Product> product;
+    private List<Item> itens;
     @OneToOne
     private Invoice invoice;
 
@@ -20,8 +20,8 @@ public class Order {
         return id;
     }
 
-    public List<Product> getProduct() {
-        return product;
+    public List<Item> getItem() {
+        return itens;
     }
 
     public Invoice getInvoice() {
