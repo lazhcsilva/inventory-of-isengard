@@ -6,6 +6,8 @@ import me.dio.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/product")
 public class ProductController {
@@ -18,7 +20,7 @@ public class ProductController {
 
     @Operation(summary = "Get all products")
     @GetMapping
-    public ResponseEntity<Iterable<Product>> findAll() {
+    public ResponseEntity<List<Product>> findAll() {
         return ResponseEntity.ok(productService.getAll());
     }
 

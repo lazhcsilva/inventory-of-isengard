@@ -6,6 +6,7 @@ import me.dio.domain.repository.ProductRepository;
 import me.dio.service.ProductService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -22,9 +23,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Iterable<Product> getAll() {
-        Iterable<Product> products = productRepository.findAll();
-        if (!products.iterator().hasNext()) {
+    public List<Product> getAll() {
+        List<Product> products = productRepository.findAll();
+        if (products.isEmpty()) {
             throw new RuntimeException("No record saved.");
         }
         return products;

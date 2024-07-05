@@ -11,7 +11,9 @@ public class Item {
     private Long id;
 
     @ManyToOne
-    private OrderItem orderItem;
+    private Order order;
+
+    private int quantity;
 
     @ManyToOne
     private Product product;
@@ -20,8 +22,12 @@ public class Item {
         return id;
     }
 
-    public OrderItem getOrderItem() {
-        return orderItem;
+    public Order getOrder() {
+        return order;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 
     public Product getProduct() {

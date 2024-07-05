@@ -6,25 +6,33 @@ import java.util.List;
 
 @Entity
 @Table(name = "tb_order")
-public class OrderItem {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @OneToMany
     private List<Item> itens;
+
     @OneToOne
     private Invoice invoice;
+
+    private String dateOrder;
 
     public Long getId() {
         return id;
     }
 
-    public List<Item> getItem() {
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public List<Item> getItens() {
         return itens;
     }
 
-    public Invoice getInvoice() {
-        return invoice;
+    public String getDate() {
+        return dateOrder;
     }
 }

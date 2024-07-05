@@ -11,7 +11,6 @@ public class Product {
     private Long id;
     private String name;
     private double price;
-    private int quantity;
 
     @ManyToOne
     private ProductCategory category;
@@ -26,10 +25,6 @@ public class Product {
 
     public double getPrice() {
         return price;
-    }
-
-    public int getQuantity() {
-        return quantity;
     }
 
     public ProductCategory getCategories() {
