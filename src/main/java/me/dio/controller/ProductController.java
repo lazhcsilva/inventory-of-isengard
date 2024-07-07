@@ -1,6 +1,7 @@
 package me.dio.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import me.dio.domain.dto.ProductDTO;
 import me.dio.domain.model.Product;
 import me.dio.service.ProductService;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +31,15 @@ public class ProductController {
         return ResponseEntity.ok(productService.findById(id));
     }
 
+    @Operation(summary = "Get product by name")
+    @GetMapping("/getName")
+    public ResponseEntity<Product> getByName(@RequestParam String productName) {
+        return ResponseEntity.ok(productService.findByName(productName));
+    }
+
     @Operation(summary = "Insert new product")
     @PostMapping
-    public ResponseEntity<Product> insert(@RequestBody Product product) {
+    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO product) {
         productService.insert(product);
         return ResponseEntity.ok(product);
     }

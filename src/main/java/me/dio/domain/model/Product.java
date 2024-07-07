@@ -7,13 +7,25 @@ import jakarta.persistence.*;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(unique=true)
     private String name;
+
     private double price;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private ProductCategory category;
+
+    public Product() {
+    }
+
+    public Product(String name, double price, ProductCategory category) {
+        this.name = name;
+        this.price = price;
+        this.category = category;
+    }
 
     public Long getId() {
         return id;
@@ -27,7 +39,8 @@ public class Product {
         return price;
     }
 
-    public ProductCategory getCategories() {
+    public ProductCategory getCategory() {
         return category;
     }
+
 }

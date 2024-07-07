@@ -10,20 +10,24 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Order order;
-
     private int quantity;
 
     @ManyToOne
     private Product product;
 
-    public Long getId() {
-        return id;
+    private double totalVale;
+
+    public Item() {
     }
 
-    public Order getOrder() {
-        return order;
+    public Item(int quantity, Product product, double totalVale) {
+        this.quantity = quantity;
+        this.product = product;
+        this.totalVale = totalVale;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public int getQuantity() {
@@ -33,4 +37,13 @@ public class Item {
     public Product getProduct() {
         return product;
     }
+
+    public double getTotalVale() {
+        return totalVale;
+    }
+
+    public void setTotalVale(double totalVale) {
+        this.totalVale = totalVale;
+    }
+
 }

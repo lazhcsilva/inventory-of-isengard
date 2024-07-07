@@ -12,27 +12,48 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
-    private List<Item> itens;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Item> items;
 
-    @OneToOne
-    private Invoice invoice;
+    private double totalOrderValue;
 
     private String dateOrder;
+
+    public Order() {
+    }
+
+    public Order(List<Item> items, double totalOrderValue, String dateOrder) {
+        this.items = items;
+        this.totalOrderValue = totalOrderValue;
+        this.dateOrder = dateOrder;
+    }
 
     public Long getId() {
         return id;
     }
 
-    public Invoice getInvoice() {
-        return invoice;
+    public List<Item> getItems() {
+        return items;
     }
 
-    public List<Item> getItens() {
-        return itens;
+    public double getTotalOrderValue() {
+        return totalOrderValue;
     }
 
-    public String getDate() {
+    public String getDateOrder() {
         return dateOrder;
     }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    public void setTotalOrderValue(double totalOrderValue) {
+        this.totalOrderValue = totalOrderValue;
+    }
+
+    public void setDateOrder(String dateOrder) {
+        this.dateOrder = dateOrder;
+    }
+
 }

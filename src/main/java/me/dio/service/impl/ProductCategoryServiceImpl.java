@@ -1,5 +1,7 @@
 package me.dio.service.impl;
 
+import me.dio.controller.handler.BusinessException;
+import me.dio.domain.dto.ProductCategoryDTO;
 import me.dio.domain.model.ProductCategory;
 import me.dio.domain.repository.ProductCategoryRepository;
 import me.dio.service.ProductCategoryService;
@@ -7,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class ProductCategoryServiceImpl implements ProductCategoryService {
@@ -29,22 +31,36 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 
     @Override
     public ProductCategory findById(Long id) {
-        return productCategoryRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        Optional<ProductCategory> category = productCategoryRepository.findById(id);
+        if (category.isEmpty()) {
+            throw new BusinessException("Category not found.");
+        }
+        return category.orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    public void insert(ProductCategory productCategory) {
-        if (productCategoryRepository.existsByName(productCategory.getName())) {
-            throw new IllegalArgumentException("This category already exists");
+    public ProductCategory getByName(String categoryName) {
+        Optional<ProductCategory> category = productCategoryRepository.findByName(categoryName);
+        if (category.isEmpty()) {
+            throw new BusinessException("Category not found.");
         }
-        productCategoryRepository.save(productCategory);
+        return category.orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
+    public void insert(ProductCategoryDTO productCategory) {
+        if (productCategoryRepository.existsByName(productCategory.name())) {
+            throw new BusinessException("This category already exists");
+        }
+        ProductCategory category = new ProductCategory(productCategory.name());
+        productCategoryRepository.save(category);
     }
 
     @Override
     public void update(Long id, ProductCategory productCategory) {
-        ProductCategory result = productCategoryRepository.findByName(productCategory.getName());
-        if (result != null && !Objects.equals(result.getId(), id)) {
-            throw new IllegalArgumentException("There is a product registered with this name");
+        Optional<ProductCategory> category = productCategoryRepository.findById(id);
+        if (category.isEmpty()) {
+            throw new BusinessException("This category already exists");
         }
         productCategoryRepository.save(productCategory);
     }

@@ -1,6 +1,9 @@
 package me.dio.service.impl;
 
+import me.dio.controller.handler.BusinessException;
+import me.dio.domain.dto.ProductDTO;
 import me.dio.domain.model.Product;
+import me.dio.domain.model.ProductCategory;
 import me.dio.domain.repository.ProductCategoryRepository;
 import me.dio.domain.repository.ProductRepository;
 import me.dio.service.ProductService;
@@ -26,32 +29,43 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getAll() {
         List<Product> products = productRepository.findAll();
         if (products.isEmpty()) {
-            throw new RuntimeException("No record saved.");
+            throw new BusinessException("No record saved.");
         }
         return products;
     }
 
     @Override
     public Product findById(Long id) {
-        return productRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isEmpty()) {
+            throw new BusinessException("Product not found.");
+        }
+        return product.orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    public void insert(Product product) {
-        if (productRepository.existsByName(product.getName())) {
-            throw new IllegalArgumentException("This product already exists.");
+    public Product findByName(String productName) {
+        Optional<Product> product = productRepository.findByName(productName);
+        if (product.isEmpty()) {
+            throw new BusinessException("This product not found.");
         }
-        if (product.getCategories().getId() == null) {
-            categoryRepository.save(product.getCategories());
+        return product.orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
+    public void insert(ProductDTO product) {
+        if (productRepository.existsByName(product.name())) {
+            throw new BusinessException("This product already exists.");
         }
-        productRepository.save(product);
+        Product newProduct = getNewProduct(product);
+        productRepository.save(newProduct);
     }
 
     @Override
     public void update(Long id, Product product) {
         Optional<Product> productDB = productRepository.findById(id);
         if (productDB.isEmpty()) {
-            throw new RuntimeException("ID not found.");
+            throw new BusinessException("ID not found.");
         }
         productRepository.save(product);
     }
@@ -60,5 +74,15 @@ public class ProductServiceImpl implements ProductService {
     public void delete(Long id) {
         Product product = findById(id);
         productRepository.delete(product);
+    }
+
+    private Product getNewProduct(ProductDTO product) {
+        ProductCategory category = categoryRepository.findByName(product.category().name())
+                .orElseGet(() -> categoryRepository.save(new ProductCategory(product.category().name())));
+
+        return new Product(
+                product.name(),
+                product.price(),
+                category);
     }
 }

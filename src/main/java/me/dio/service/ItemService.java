@@ -1,5 +1,6 @@
 package me.dio.service;
 
+import me.dio.domain.dto.ItemDTO;
 import me.dio.domain.model.Item;
 
 import java.util.List;

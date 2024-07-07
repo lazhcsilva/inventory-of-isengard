@@ -45,6 +45,7 @@ public class ItemController {
     }
 
     @Operation(summary = "Delete item")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         itemService.delete(id);
         return ResponseEntity.ok().build();

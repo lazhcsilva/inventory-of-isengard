@@ -1,6 +1,7 @@
 package me.dio.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import me.dio.domain.dto.OrderDTO;
 import me.dio.domain.model.Order;
 import me.dio.service.OrderService;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class OrderController {
 
     @Operation(summary = "Insert new order")
     @PostMapping
-    public ResponseEntity<Order> insert(@RequestBody Order order) {
+    public ResponseEntity<OrderDTO> insert(@RequestBody OrderDTO order) {
         orderService.insert(order);
         return ResponseEntity.ok(order);
     }
