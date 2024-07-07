@@ -4,6 +4,5 @@ import java.util.List;
 
 public record OrderDTO(Long id,
                        List<ItemDTO> items,
-                       double totalOrderValue,
-                       String dateOrder) {
+                       double totalOrderValue) {
 }

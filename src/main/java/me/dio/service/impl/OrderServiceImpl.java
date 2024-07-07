@@ -12,6 +12,10 @@ import me.dio.service.OrderService;
 import me.dio.service.ProductService;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -73,7 +77,9 @@ public class OrderServiceImpl implements OrderService {
 
         }
 
-        Order order = new Order(items, totalOrderValue, orderDTO.dateOrder());
+        String dateNow = formatDateNow();
+
+        Order order = new Order(items, totalOrderValue, dateNow);
 
         orderRepository.save(order);
 
@@ -107,7 +113,7 @@ public class OrderServiceImpl implements OrderService {
             existingOrder.getItems().clear();
             existingOrder.getItems().addAll(updatedItems);
             existingOrder.setTotalOrderValue(newTotalOrderValue);
-            existingOrder.setDateOrder(order.getDateOrder());
+            existingOrder.setDateOrder(formatDateNow());
 
             orderRepository.save(existingOrder);
         } catch (Exception e) {
@@ -121,4 +127,12 @@ public class OrderServiceImpl implements OrderService {
         Order order = findById(id);
         orderRepository.delete(order);
     }
+
+    private static String formatDateNow() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime now = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
+        String dateNow = now.format(formatter);
+        return dateNow;
+    }
+
 }
